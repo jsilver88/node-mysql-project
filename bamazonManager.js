@@ -1,13 +1,14 @@
+require("dotenv").config();
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 let Table = require("cli-table3");
 
 let connection = mysql.createConnection({
-  host: "127.0.0.1",
-  port: 3306,
-  user: "root",
+  host: process.env.host,
+  port: process.env.port,
+  user: process.env.user,
   password: process.env.password,
-  database: "bamazon_DB",
+  database: process.env.database,
 });
 
 connection.connect(function (err) {
@@ -45,6 +46,70 @@ function bamazonManager() {
         process.exit();
       }
     });
+}
+
+function bamazonProducts() {
+  connection.query("SELECT * FROM products", function (err, res) {
+    if (err) throw err;
+
+    let table = new Table({
+      head: [
+        "Item ID",
+        "Product Name",
+        "Department Name",
+        "Price",
+        "Stock Quantity",
+      ],
+      colWidths: [10, 25, 25, 10, 25],
+    });
+
+    for (let i = 0; i < res.length; i++) {
+      let tableInput = res[i];
+      table.push([
+        tableInput.item_id,
+        tableInput.product_name,
+        tableInput.department_name,
+        tableInput.price,
+        tableInput.stock_quantity,
+      ]);
+    }
+    console.log(table.toString());
+    bamazonManager();
+  });
+}
+
+function lowInventory() {
+  connection.query("SELECT * FROM products", function (err, res) {
+    if (err) throw err;
+
+    let table = new Table({
+      head: [
+        "Item ID",
+        "Product Name",
+        "Department Name",
+        "Price",
+        "Stock Quantity",
+      ],
+      colWidths: [10, 25, 25, 10, 25],
+    });
+    for (let i = 0; i < res.length; i++) {
+      let tableInput = res[i];
+      if (tableInput.stock_quantity < 5) {
+        table.push([
+          tableInput.item_id,
+          tableInput.product_name,
+          tableInput.department_name,
+          tableInput.price,
+          tableInput.stock_quantity,
+        ]);
+        console.log("Inventory's low, please restock.");
+      } else {
+        console.log("Inventory's stocked.");
+      }
+    }
+    console.log(table.toString());
+    bamazonManager();
+  });
 }
 
 bamazonManager();

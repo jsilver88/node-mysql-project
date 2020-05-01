@@ -1,13 +1,14 @@
+require("dotenv").config();
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 var Table = require("cli-table3");
 
 let connection = mysql.createConnection({
-  host: "127.0.0.1",
-  port: 3306,
-  user: "root",
+  host: process.env.host,
+  port: process.env.port,
+  user: process.env.user,
   password: process.env.password,
-  database: "bamazon_DB",
+  database: process.env.database,
 });
 
 connection.connect(function (err) {
