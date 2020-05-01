@@ -41,6 +41,64 @@ function bamazonCustomer() {
     }
     console.log(table.toString());
   });
+
+  inquirer
+    .prompt([
+      {
+        name: "itemId",
+        type: "input",
+        message: "Enter the ID # you would like to purchase.",
+        validate: function (value) {
+          if (isNaN(value) == false) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+      {
+        name: "amount",
+        type: "input",
+        message: "Enter quantity amount.",
+        validate: function (value) {
+          if (isNaN(value) == false) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+    ])
+    .then(function (answer) {
+      let custAmount = answer.amount;
+      let custItem = answer.itemId;
+      connection.query(
+        "SELECT * FROM products WHERE ?",
+        { item_id: custItem },
+        function (err, item) {
+          if (err) throw err;
+          if (custAmount <= item[0].stock_quantity) {
+            console.log("We have " + item[0].product_name + " in stock.");
+            console.log(
+              "Here's your order: " +
+                item[0].product_name +
+                ". Quantity: " +
+                custAmount
+            );
+            connection.query(
+              "UPDATE products SET stock_quantity=? WHERE item_id=?",
+              [item[0].stock_quantity - custAmount, custItem],
+              function (err, remainder) {
+                if (err) throw err;
+                reOrder();
+              }
+            );
+          } else {
+            console.log("Insufficient quantity amount!");
+          }
+        }
+      );
+    });
 }
 
 bamazonCustomer();
