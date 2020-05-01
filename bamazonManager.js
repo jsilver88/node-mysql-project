@@ -112,4 +112,91 @@ function lowInventory() {
   });
 }
 
+function addInventory() {
+  connection.query("SELECT * FROM products", function (err, res) {
+    if (err) throw err;
+
+    let table = new Table({
+      head: [
+        "Item ID",
+        "Product Name",
+        "Department Name",
+        "Price",
+        "Stock Quantity",
+      ],
+      colWidths: [10, 25, 25, 10, 25],
+    });
+
+    for (let i = 0; i < res.length; i++) {
+      let tableInput = res[i];
+      table.push([
+        tableInput.item_id,
+        tableInput.product_name,
+        tableInput.department_name,
+        tableInput.price,
+        tableInput.stock_quantity,
+      ]);
+    }
+    console.log(table.toString());
+
+    inquirer
+      .prompt([
+        {
+          name: "item_id",
+          type: "input",
+          message: "What item # would you like to add?",
+          validate: function (value) {
+            if (isNaN(value) == false) {
+              return true;
+            } else {
+              return false;
+            }
+          },
+        },
+        {
+          name: "amount",
+          type: "input",
+          message: "Enter quantity amount",
+          validate: function (value) {
+            if (isNaN(value) == false) {
+              return true;
+            } else {
+              return false;
+            }
+          },
+        },
+      ])
+      .then(function (answer) {
+        connection.query(
+          "SELECT * FROM products WHERE ?",
+          [
+            {
+              item_id: answer.item_id,
+            },
+          ],
+          function (err, item) {
+            if (err) throw err;
+            console.log("Product added successfully.");
+            connection.query(
+              "UPDATE products SET ? WHERE ?",
+              [
+                {
+                  stock_quantity:
+                    parseInt(item[0].stock_quantity) + parseInt(answer.amount),
+                },
+                {
+                  item_id: answer.item_id,
+                },
+              ],
+              function (err) {
+                if (err) throw err;
+                bamazonManager();
+              }
+            );
+          }
+        );
+      });
+  });
+}
+
 bamazonManager();
