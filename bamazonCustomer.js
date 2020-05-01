@@ -83,7 +83,9 @@ function bamazonCustomer() {
               "Here's your order: " +
                 item[0].product_name +
                 ". Quantity: " +
-                custAmount
+                custAmount +
+                ". Order total: " +
+                item[0].price * custAmount
             );
             connection.query(
               "UPDATE products SET stock_quantity=? WHERE item_id=?",
@@ -98,6 +100,26 @@ function bamazonCustomer() {
           }
         }
       );
+    });
+}
+
+function reOrder() {
+  inquirer
+    .prompt([
+      {
+        name: "addToOrder",
+        type: "list",
+        message: "Would you like to continue shopping?",
+        choices: ["Yes", "No"],
+      },
+    ])
+    .then(function (answer) {
+      if (answer.addToOrder === "Yes") {
+        bamazonCustomer();
+      } else {
+        console.log("Thank you for your business...Goodbye");
+        process.exit();
+      }
     });
 }
 
