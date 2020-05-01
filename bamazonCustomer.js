@@ -6,7 +6,7 @@ let connection = mysql.createConnection({
   host: "127.0.0.1",
   port: 3306,
   user: "root",
-  password: "060660Jr",
+  password: process.env.password,
   database: "bamazon_DB",
 });
 
