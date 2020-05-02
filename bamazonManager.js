@@ -199,4 +199,60 @@ function addInventory() {
   });
 }
 
+function newProduct() {
+  inquirer
+    .prompt([
+      {
+        name: "newProduct",
+        type: "input",
+        message: "Name of product",
+      },
+      {
+        name: "department",
+        type: "input",
+        message: "Enter department category",
+      },
+      {
+        name: "price",
+        type: "input",
+        message: "Enter cost of item ($)",
+        validate: function (value) {
+          if (isNaN(value) == false) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+      {
+        name: "amount",
+        type: "input",
+        message: "Enter quantity amount",
+        validate: function (value) {
+          if (isNaN(value) == false) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+    ])
+    .then(function (answer) {
+      connection.query(
+        "INSERT INTO products SET ?",
+        {
+          product_name: answer.newProduct,
+          department_name: answer.department,
+          price: answer.price,
+          stock_quantity: answer.amount,
+        },
+        function (err, res) {
+          if (err) throw err;
+          console.log(answer.newProduct + " added.");
+          bamazonManager();
+        }
+      );
+    });
+}
+
 bamazonManager();

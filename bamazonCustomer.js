@@ -98,6 +98,7 @@ function bamazonCustomer() {
             );
           } else {
             console.log("Insufficient quantity amount!");
+            bamazonCustomer();
           }
         }
       );
