@@ -1,7 +1,6 @@
 require("dotenv").config();
 const mysql = require("mysql");
 const inquirer = require("inquirer");
-let Table = require("cli-table3");
 
 let connection = mysql.createConnection({
   host: process.env.host,
@@ -52,28 +51,20 @@ function bamazonProducts() {
   connection.query("SELECT * FROM products", function (err, res) {
     if (err) throw err;
 
-    let table = new Table({
-      head: [
-        "Item ID",
-        "Product Name",
-        "Department Name",
-        "Price",
-        "Stock Quantity",
-      ],
-      colWidths: [10, 25, 25, 10, 25],
-    });
-
     for (let i = 0; i < res.length; i++) {
-      let tableInput = res[i];
-      table.push([
-        tableInput.item_id,
-        tableInput.product_name,
-        tableInput.department_name,
-        tableInput.price,
-        tableInput.stock_quantity,
-      ]);
+      let results = res[i];
+      console.log(
+        results.item_id +
+          " | " +
+          results.product_name +
+          " | " +
+          results.department_name +
+          " | " +
+          results.price +
+          " | " +
+          results.stock_quantity
+      );
     }
-    console.log(table.toString());
     bamazonManager();
   });
 }
@@ -81,33 +72,26 @@ function bamazonProducts() {
 function lowInventory() {
   connection.query("SELECT * FROM products", function (err, res) {
     if (err) throw err;
-
-    let table = new Table({
-      head: [
-        "Item ID",
-        "Product Name",
-        "Department Name",
-        "Price",
-        "Stock Quantity",
-      ],
-      colWidths: [10, 25, 25, 10, 25],
-    });
     for (let i = 0; i < res.length; i++) {
-      let tableInput = res[i];
-      if (tableInput.stock_quantity < 5) {
-        table.push([
-          tableInput.item_id,
-          tableInput.product_name,
-          tableInput.department_name,
-          tableInput.price,
-          tableInput.stock_quantity,
-        ]);
+      let results = res[i];
+      if (results.stock_quantity < 5) {
+        console.log(
+          results.item_id +
+            " | " +
+            results.product_name +
+            " | " +
+            results.department_name +
+            " | " +
+            results.price +
+            " | " +
+            results.stock_quantity
+        );
+
         console.log("Inventory's low, please restock.");
       } else {
         console.log("Inventory's stocked.");
       }
     }
-    console.log(table.toString());
     bamazonManager();
   });
 }
@@ -115,29 +99,20 @@ function lowInventory() {
 function addInventory() {
   connection.query("SELECT * FROM products", function (err, res) {
     if (err) throw err;
-
-    let table = new Table({
-      head: [
-        "Item ID",
-        "Product Name",
-        "Department Name",
-        "Price",
-        "Stock Quantity",
-      ],
-      colWidths: [10, 25, 25, 10, 25],
-    });
-
     for (let i = 0; i < res.length; i++) {
-      let tableInput = res[i];
-      table.push([
-        tableInput.item_id,
-        tableInput.product_name,
-        tableInput.department_name,
-        tableInput.price,
-        tableInput.stock_quantity,
-      ]);
+      let results = res[i];
+      console.log(
+        results.item_id +
+          " | " +
+          results.product_name +
+          " | " +
+          results.department_name +
+          " | " +
+          results.price +
+          " | " +
+          results.stock_quantity
+      );
     }
-    console.log(table.toString());
 
     inquirer
       .prompt([

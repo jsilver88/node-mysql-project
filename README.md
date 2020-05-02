@@ -36,6 +36,6 @@ Create an Amazon-like storefront with MySQL and Inquirer. The app receives order
 
 - mysql (https://www.npmjs.com/package/mysql)
 - inquirer (https://www.npmjs.com/package/inquirer)
-- cli-table3 (https://www.npmjs.com/package/cli-table3)
+- dotenv (https://www.npmjs.com/package/dotenv)
 
 ## Demo
