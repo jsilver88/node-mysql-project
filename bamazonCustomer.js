@@ -120,7 +120,7 @@ function reOrder() {
         bamazonCustomer();
       } else {
         console.log("Thank you for your business...Goodbye");
-        process.exit();
+        connection.end();
       }
     });
 }

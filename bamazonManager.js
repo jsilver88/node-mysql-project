@@ -182,7 +182,8 @@ function addInventory() {
               [
                 {
                   stock_quantity:
-                    parseInt(item[0].stock_quantity) + parseInt(answer.amount),
+                    parseFloat(item[0].stock_quantity) +
+                    parseFloat(answer.amount),
                 },
                 {
                   item_id: answer.item_id,
