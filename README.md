@@ -39,3 +39,9 @@ Create an Amazon-like storefront with MySQL and Inquirer. The app receives order
 - dotenv (https://www.npmjs.com/package/dotenv)
 
 ## Demo
+
+![demo](./demo/customer.gif)
+![demo](./demo/allInventory.gif)
+![demo](./demo/lowInventory.gif)
+![demo](./demo/addtoInventory.gif)
+![demo](./demo/newProduct.gif)
