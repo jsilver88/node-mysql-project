@@ -11,7 +11,6 @@ let connection = mysql.createConnection({
 });
 
 connection.connect(function (err) {
-  console.log("Connected as id: " + connection.threadId);
   if (err) throw err;
 });
 
@@ -21,7 +20,7 @@ function bamazonManager() {
       {
         name: "manager",
         type: "list",
-        message: "Choose from the following:",
+        message: "Choose from the following",
         choices: [
           "View products for sale",
           "View low inventory",
@@ -55,14 +54,14 @@ function bamazonProducts() {
       let results = res[i];
       console.log(
         results.item_id +
-          " | " +
-          results.product_name +
-          " | " +
-          results.department_name +
-          " | " +
-          results.price +
-          " | " +
-          results.stock_quantity
+        " | " +
+        results.product_name +
+        " | " +
+        results.department_name +
+        " | " +
+        results.price +
+        " | " +
+        results.stock_quantity
       );
     }
     bamazonManager();
@@ -77,14 +76,14 @@ function lowInventory() {
       if (results.stock_quantity < 5) {
         console.log(
           results.item_id +
-            " | " +
-            results.product_name +
-            " | " +
-            results.department_name +
-            " | " +
-            results.price +
-            " | " +
-            results.stock_quantity
+          " | " +
+          results.product_name +
+          " | " +
+          results.department_name +
+          " | " +
+          results.price +
+          " | " +
+          results.stock_quantity
         );
 
         console.log("Inventory's low, please restock.");
@@ -103,14 +102,14 @@ function addInventory() {
       let results = res[i];
       console.log(
         results.item_id +
-          " | " +
-          results.product_name +
-          " | " +
-          results.department_name +
-          " | " +
-          results.price +
-          " | " +
-          results.stock_quantity
+        " | " +
+        results.product_name +
+        " | " +
+        results.department_name +
+        " | " +
+        results.price +
+        " | " +
+        results.stock_quantity
       );
     }
 
